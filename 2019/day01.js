@@ -15,7 +15,15 @@ const calculateNeededFuelIteratively = (mass) => {
     return totalFuel;
 }
 
-var array = fs.readFileSync("day01input.txt").toString().split("\n");
+const partOne = () => {
+  let input = fs.readFileSync("day01input.txt").toString().split("\n");
+  return array.filter(x => x !== '').reduce((acc, cur) => {return acc + calculateNeededFuel(cur)}, 0);
+}
+
+const partTwo = () => {
+  let input = fs.readFileSync("day01input.txt").toString().split("\n");
+  return array.filter(x => x !== '').reduce((acc, cur) => {return acc + calculateNeededFuelIteratively(cur)}, 0);
+}
 
 
 console.log("Part 1: " + array.filter(x => x !== '').reduce((acc, cur) => {return acc + calculateNeededFuel(cur)}, 0));

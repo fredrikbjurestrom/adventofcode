@@ -1,2 +1,2 @@
 # adventofcode
-Solutions for advent of code
+Solutions for [https://adventofcode.com](advent of code) in js
