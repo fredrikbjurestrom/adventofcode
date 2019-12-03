@@ -3,7 +3,7 @@
 const fs = require('fs');
 const IntcodeProgram = require('./utils/IntcodeProgram');
 
-const input = fs.readFileSync("day02input.txt").toString().split(",").map(x => parseInt(x));
+const input = fs.readFileSync("./inputs/day02input.txt").toString().split(",").map(x => parseInt(x));
 
 const operandResolver = (expected) => {
     let intcodeInstance = new IntcodeProgram(input);
