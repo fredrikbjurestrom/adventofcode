@@ -16,12 +16,32 @@ func FileAsInts(path string) ([]int, error) {
 	}
 	defer f.Close()
 
-	return ReadInts(f)
+	return readInts(f)
 }
 
-// ReadInts reads whitespace-separated ints from r. If there's an error, it
-// returns the ints successfully read so far as well as the error value.
-func ReadInts(r io.Reader) ([]int, error) {
+// FileAsStrings reads a file at supplied location and returns a string array. If there's an error, it
+// returns the strings successfully read so far as well as the error value.
+func FileAsStrings(path string) ([]string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return readStrings(f)
+}
+
+func readStrings(r io.Reader) ([]string, error) {
+	scanner := bufio.NewScanner(r)
+	var result []string
+	for scanner.Scan() {
+		result = append(result, scanner.Text())
+	}
+
+	return result, scanner.Err()
+}
+
+func readInts(r io.Reader) ([]int, error) {
 	scanner := bufio.NewScanner(r)
 	scanner.Split(bufio.ScanWords)
 	var result []int
