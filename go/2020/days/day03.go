@@ -22,8 +22,6 @@ func Day03() {
 	rightSevenDownOne := 0
 	rightOneDownTwo := 0
 
-	// x := 0
-	// xtrajectory := 3
 	for y, v := range input {
 
 		rightOneDownOne += tree(v, y*1)
