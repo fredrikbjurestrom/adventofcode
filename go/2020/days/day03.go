@@ -50,7 +50,7 @@ func tree(row string, x int) int {
 
 	if string(row[pos]) == "#" {
 		return 1
-	} else {
-		return 0
 	}
+
+	return 0
 }
