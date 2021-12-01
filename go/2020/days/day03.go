@@ -9,7 +9,7 @@ import (
 // Day03 - Toboggan Trajectory
 func Day03() {
 	fmt.Println("-------------------------")
-	fmt.Println("DAY TWO")
+	fmt.Println("DAY THREE")
 
 	input, err := util.FileAsStrings("./input/day03input.txt")
 	if err != nil {
