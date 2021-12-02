@@ -1,2 +1,2 @@
 # adventofcode
-Solutions for [https://adventofcode.com](advent of code) in Go
+Solutions for [advent of code](https://adventofcode.com) in Go

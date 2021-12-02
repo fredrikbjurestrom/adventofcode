@@ -11,4 +11,5 @@ func main() {
 	fmt.Println()
 
 	days.Day01()
+	days.Day02()
 }
