@@ -8,7 +8,7 @@ import (
 )
 
 // BinaryFileAsInts reads a file at supplied location and returns an uint64 array. If there's an error, it
-// returns the uints successfully read so far as well as the error value.
+// returns the uints successfully read so far as well along with identified bitSize and the error value.
 func BinaryFileAsInts(path string) ([]uint64, uint, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -47,21 +47,21 @@ func readBinary(r io.Reader) ([]uint64, uint, error) {
 	scanner := bufio.NewScanner(r)
 	scanner.Split(bufio.ScanWords)
 	var result []uint64
-	var byteSize int
+	var bitSize int
 	for scanner.Scan() {
 		row := scanner.Text()
 
-		if len(row) > byteSize {
-			byteSize = len(row)
+		if len(row) > bitSize {
+			bitSize = len(row)
 		}
 
 		x, err := strconv.ParseUint(scanner.Text(), 2, 64)
 		if err != nil {
-			return result, uint(byteSize), err
+			return result, uint(bitSize), err
 		}
 		result = append(result, x)
 	}
-	return result, uint(byteSize), scanner.Err()
+	return result, uint(bitSize), scanner.Err()
 }
 
 func readStrings(r io.Reader) ([]string, error) {

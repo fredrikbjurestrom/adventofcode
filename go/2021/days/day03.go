@@ -11,24 +11,24 @@ func Day03() {
 	fmt.Println("-------------------------")
 	fmt.Println("DAY TWO")
 
-	input, byteSize, err := util.BinaryFileAsInts("./input/day03input.txt")
+	input, bitSize, err := util.BinaryFileAsInts("./input/day03input.txt")
 	if err != nil {
 		panic(err)
 	}
 
 	// part 1
-	powerConsumption, err := getPowerConsumption(input, byteSize)
+	powerConsumption, err := getPowerConsumption(input, bitSize)
 	if err != nil {
 		panic(err)
 	}
 
 	// part 2
-	oxygenGeneratorRating, err := getOxygenGeneratorRating(input, byteSize)
+	oxygenGeneratorRating, err := getOxygenGeneratorRating(input, bitSize)
 	if err != nil {
 		panic(err)
 	}
 
-	co2ScrubberRating, err := getCo2ScrubberRating(input, byteSize)
+	co2ScrubberRating, err := getCo2ScrubberRating(input, bitSize)
 	if err != nil {
 		panic(err)
 	}
@@ -40,8 +40,8 @@ func Day03() {
 	fmt.Println()
 }
 
-func getPowerConsumption(input []uint64, byteSize uint) (result uint64, err error) {
-	naiveCounter := make([]int, byteSize)
+func getPowerConsumption(input []uint64, bitSize uint) (result uint64, err error) {
+	naiveCounter := make([]int, bitSize)
 
 	var epsilon uint64 = 0
 	var gamma uint64 = 0
@@ -65,8 +65,8 @@ func getPowerConsumption(input []uint64, byteSize uint) (result uint64, err erro
 	return epsilon * gamma, nil
 }
 
-func getOxygenGeneratorRating(input []uint64, byteSize uint) (result uint64, err error) {
-	for pos := byteSize - 1; pos >= 0; pos-- {
+func getOxygenGeneratorRating(input []uint64, bitSize uint) (result uint64, err error) {
+	for pos := bitSize - 1; pos >= 0; pos-- {
 		input = filterRatings(input, true, pos)
 
 		if len(input) < 2 {
@@ -78,8 +78,8 @@ func getOxygenGeneratorRating(input []uint64, byteSize uint) (result uint64, err
 	return result, nil
 }
 
-func getCo2ScrubberRating(input []uint64, byteSize uint) (result uint64, err error) {
-	for pos := byteSize - 1; pos >= 0; pos-- {
+func getCo2ScrubberRating(input []uint64, bitSize uint) (result uint64, err error) {
+	for pos := bitSize - 1; pos >= 0; pos-- {
 		input = filterRatings(input, false, pos)
 
 		if len(input) < 2 {
