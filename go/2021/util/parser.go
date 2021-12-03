@@ -7,6 +7,18 @@ import (
 	"strconv"
 )
 
+// BinaryFileAsInts reads a file at supplied location and returns an uint64 array. If there's an error, it
+// returns the uints successfully read so far as well as the error value.
+func BinaryFileAsInts(path string) ([]uint64, uint, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer f.Close()
+
+	return readBinary(f)
+}
+
 // FileAsInts reads a file at supplied location and returns an int array. If there's an error, it
 // returns the ints successfully read so far as well as the error value.
 func FileAsInts(path string) ([]int, error) {
@@ -29,6 +41,27 @@ func FileAsStrings(path string) ([]string, error) {
 	defer f.Close()
 
 	return readStrings(f)
+}
+
+func readBinary(r io.Reader) ([]uint64, uint, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanWords)
+	var result []uint64
+	var byteSize int
+	for scanner.Scan() {
+		row := scanner.Text()
+
+		if len(row) > byteSize {
+			byteSize = len(row)
+		}
+
+		x, err := strconv.ParseUint(scanner.Text(), 2, 64)
+		if err != nil {
+			return result, uint(byteSize), err
+		}
+		result = append(result, x)
+	}
+	return result, uint(byteSize), scanner.Err()
 }
 
 func readStrings(r io.Reader) ([]string, error) {

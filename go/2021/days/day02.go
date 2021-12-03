@@ -18,12 +18,12 @@ func Day02() {
 		panic(err)
 	}
 
-	part1, err := part1(instructions)
+	part1, err := getSubmarinePosition(instructions)
 	if err != nil {
 		panic(err)
 	}
 
-	part2, err := part2(instructions)
+	part2, err := getSubmarinePositionWithAim(instructions)
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func Day02() {
 	fmt.Println()
 }
 
-func part1(instructions []string) (result int, err error) {
+func getSubmarinePosition(instructions []string) (result int, err error) {
 	horizontal := 0
 	depth := 0
 
@@ -60,7 +60,7 @@ func part1(instructions []string) (result int, err error) {
 	return horizontal * depth, nil
 }
 
-func part2(instructions []string) (result int, err error) {
+func getSubmarinePositionWithAim(instructions []string) (result int, err error) {
 	horizontal := 0
 	depth := 0
 	aim := 0
