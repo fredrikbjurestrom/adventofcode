@@ -14,4 +14,5 @@ func main() {
 	days.Day02()
 	days.Day03()
 	days.Day04()
+	days.Day05()
 }

@@ -25,13 +25,10 @@ func Day04() {
 		panic(err)
 	}
 
-	fmt.Println(boardSum)
-
 	bestScore, err := scoreBoards(draw, boards, boardSum, true)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(boardSum)
 
 	// part 2
 	worstScore, err := scoreBoards(draw, boards, boardSum, false)
