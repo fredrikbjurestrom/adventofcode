@@ -9,7 +9,7 @@ import (
 // Day03 - Binary Diagnostic
 func Day03() {
 	fmt.Println("-------------------------")
-	fmt.Println("DAY TWO")
+	fmt.Println("DAY THREE")
 
 	input, bitSize, err := util.BinaryFileAsInts("./input/day03input.txt")
 	if err != nil {
