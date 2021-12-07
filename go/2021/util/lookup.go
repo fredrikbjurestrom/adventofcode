@@ -1,5 +1,9 @@
 package util
 
+import (
+	"sort"
+)
+
 // Max returns the largest integer of inputs
 func Max(nums ...int) int {
 	max := nums[0]
@@ -20,6 +24,30 @@ func Min(nums ...int) int {
 		}
 	}
 	return min
+}
+
+// Mediam returns the median value
+func Median(nums ...int) float64 {
+	sort.Ints(nums)
+
+	m := len(nums) / 2
+
+	if m%2 > 0 {
+		return float64(nums[m])
+	}
+
+	return float64((nums[m-1] + nums[m])) / 2
+}
+
+// Avg returns the average value
+func Avg(nums ...int) float64 {
+	s := 0
+	l := len(nums)
+	for _, v := range nums {
+		s += v
+	}
+
+	return (float64(s)) / (float64(l))
 }
 
 // Contens check int slice if supplied value exists

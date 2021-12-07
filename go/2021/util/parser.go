@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // BinaryFileAsInts reads a file at supplied location and returns an uint64 array. If there's an error, it
@@ -29,6 +30,18 @@ func FileAsInts(path string) ([]int, error) {
 	defer f.Close()
 
 	return readInts(f)
+}
+
+// SeedAsInts reads a comma separated seed at supplied location and returns an int array. If there's an error, it
+// returns the ints successfully read so far as well as the error value.
+func SeedAsInts(path string) ([]int, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return readSeedInts(f)
 }
 
 // FileAsStrings reads a file at supplied location and returns a string array. If there's an error, it
@@ -84,6 +97,23 @@ func readInts(r io.Reader) ([]int, error) {
 			return result, err
 		}
 		result = append(result, x)
+	}
+	return result, scanner.Err()
+}
+
+func readSeedInts(r io.Reader) ([]int, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanWords)
+	var result []int
+	for scanner.Scan() {
+		seed := scanner.Text()
+		for _, strv := range strings.Split(seed, ",") {
+			num, err := strconv.Atoi(strv)
+			if err != nil {
+				return result, err
+			}
+			result = append(result, num)
+		}
 	}
 	return result, scanner.Err()
 }
