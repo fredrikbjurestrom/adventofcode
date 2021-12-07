@@ -52,12 +52,6 @@ func Day07() {
 	fmt.Println()
 }
 
-func findMedian(input []int) (result int, err error) {
-	median := util.Median(input...)
-
-	return int(math.Round(median)), nil
-}
-
 func calculateCrabFuelCost(input []int, target int) (result int, err error) {
 	for _, v := range input {
 		diff := int(math.Abs(float64(v - target)))
