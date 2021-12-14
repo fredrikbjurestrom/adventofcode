@@ -50,7 +50,7 @@ func Avg(nums ...int) float64 {
 	return (float64(s)) / (float64(l))
 }
 
-// Contens check int slice if supplied value exists
+// Contains check int slice if supplied value exists
 func Contains(s []int, e int) bool {
 	for _, a := range s {
 		if a == e {
@@ -58,4 +58,30 @@ func Contains(s []int, e int) bool {
 		}
 	}
 	return false
+}
+
+// ContainsString check int slice if supplied value exists
+func ContainsString(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func DistinctStrings(s []string) []string {
+	dict := map[string]int{}
+	for _, a := range s {
+		dict[a]++
+	}
+
+	result := make([]string, len(dict))
+	i := 0
+	for k := range dict {
+		result[i] = k
+		i++
+	}
+
+	return result
 }
