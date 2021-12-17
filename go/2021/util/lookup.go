@@ -15,6 +15,16 @@ func Max(nums ...int) int {
 	return max
 }
 
+func Max64(nums ...int64) int64 {
+	max := nums[0]
+	for _, n := range nums {
+		if n > max {
+			max = n
+		}
+	}
+	return max
+}
+
 // Min returns the largest integer of inputs
 func Min(nums ...int) int {
 	min := nums[0]
@@ -24,6 +34,40 @@ func Min(nums ...int) int {
 		}
 	}
 	return min
+}
+
+func Min64(nums ...int64) int64 {
+	min := nums[0]
+	for _, n := range nums {
+		if n < min {
+			min = n
+		}
+	}
+	return min
+}
+
+func Sum(nums ...int64) int64 {
+	sum := int64(0)
+	for _, n := range nums {
+		sum += n
+	}
+	return sum
+}
+
+func Product(nums ...int64) int64 {
+	if len(nums) == 0 {
+		return int64(0)
+	}
+
+	if len(nums) == 1 {
+		return nums[0]
+	}
+
+	sum := int64(1)
+	for _, n := range nums {
+		sum *= n
+	}
+	return sum
 }
 
 // Mediam returns the median value
