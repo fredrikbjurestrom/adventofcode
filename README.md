@@ -1,2 +1,3 @@
 # adventofcode
-Solutions for [advent of code](https://adventofcode.com) in Go
+
+Solutions for [advent of code](https://adventofcode.com) in ~~js~~, ~~Go~~, Python
