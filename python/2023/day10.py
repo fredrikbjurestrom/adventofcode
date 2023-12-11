@@ -1,117 +1,83 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
 from pathlib import Path
-import time
 import numpy as np
-import sys
+
+N = (-1, 0)
+S = (1, 0)
+E = (0, 1)
+W = (0, -1)
 
 symbol_map = {
-    "|": [(-1, 0), (1, 0)],
-    "-": [(0, -1), (0, 1)],
-    "L": [(-1, 0), (0, 1)],
-    "J": [(-1, 0), (0, -1)],
-    "7": [(1, 0), (0, -1)],
-    "F": [(1, 0), (0, 1)],
-    ".": [(-1, 0), (1, 0), (0, -1), (0, 1)],
+    "|": [N, S],
+    "-": [W, E],
+    "L": [N, E],
+    "J": [N, W],
+    "7": [S, W],
+    "F": [S, E],
 }
 
 
-nodes = {}
+graph = {}
 start_node = (0, 0)
 ground_nodes = []
 
-with open(Path(__file__).parent / "inputs/day10_example.txt") as file:
-    for y, row in enumerate(file.read().splitlines()):
+with open(Path(__file__).parent / "inputs/day10.txt") as file:
+    grid = np.array([[c for c in row] for row in file.read().splitlines()])
+
+    for y, row in enumerate(grid):
         for x, symbol in enumerate(row):
             if symbol == "S":
                 start_node = (y, x)
-                nodes[start_node] = ("S", [])
+                graph[start_node] = []
             elif symbol == ".":
                 ground_nodes.append((y, x))
             elif symbol in symbol_map:
-                pipes = [tuple(np.add((y, x), pipe)) for pipe in symbol_map[symbol]]
-                nodes[(y, x)] = (symbol, pipes)
+                graph[(y, x)] = [
+                    tuple(np.add((y, x), pipe)) for pipe in symbol_map[symbol]
+                ]
 
-    for node, links in nodes.items():
-        for link in links[1]:
+    for node, links in graph.items():
+        for link in links:
             if link == start_node:
-                nodes[link][1].append(node)
-
-    for ground_node in ground_nodes:
-        nodes[ground_node] = ".", [
-            tuple(np.add(ground_node, pipe)) for pipe in symbol_map["."]
-        ]
-
-print(start_node, nodes[start_node], nodes[0, 0])
+                graph[link].append(node)
 
 
-def _can_escape(graph, node) -> bool:
-    visited = set()
-    queue = []
-    visited.add(node)
-    queue.append([node, node])
-
-    while queue:
-        test = queue.pop(0)
-        print("poped", test)
-
-        prev, cur = test
-        print("pop", prev, cur, queue)
-        tile, neigbours = graph[cur]
-
-        delta = (0, 0) if not prev else tuple(np.subtract(cur, prev))
-        print(prev, cur, delta)
-
-        # if tile == "7" or tile == "F":
-        #     neigbours.append(tuple(np.add(s, (-1, 0))))
-
-        # if tile == "J" or tile == "L":
-        #     neigbours.append(tuple(np.add(s, (1, 0))))
-
-        for neigbour in neigbours:
-            if neigbour not in graph:
-                # print(node, "escaped")
-                return True
-
-            # print(tile, cur, neigbour, delta)
-
-            if neigbour not in visited:
-                visited.add(neigbour)
-                print("append", cur, neigbour, queue)
-                queue.append([cur, neigbour])
-                print("appended queue", queue)
-
-    print(node, "can't escape")
-    return False
-
-
-def part1() -> int:
-    moves = 1
-
-    next = nodes[start_node][1][0]
-    prev = start_node
+def part1() -> list[tuple[int, int]]:
+    """Traverse the pipes and return the visited nodes. The length is used in part1, the path is used in part2"""
+    visited = [start_node]
+    next = graph[start_node][0]
     while next != start_node:
-        moves += 1
-        prev, next = next, nodes[next][1][0] if nodes[next][1][0] != prev else nodes[next][1][1]
+        visited.append(next)
+        next = graph[next][0] if graph[next][0] != visited[-2] else graph[next][1]
 
-    return moves // 2
+    return visited
 
 
-def part2() -> int:
-    escapees = 0
+def part2(pipes) -> int:
+    """Plot the path and count the number of points inside the polygon"""
+    pipes.append(start_node)
+    xy = np.array([(pipe[1], pipe[0]) for pipe in pipes])
+    p = Polygon(xy, closed=True, edgecolor="darkblue", facecolor="lightskyblue")
+    edges = set(pipes)
+    contained = 0
+    for y, x in np.ndindex(grid.shape):
+        if (y, x) in edges:
+            continue
+        if p.contains_point((x, y)):
+            contained += 1
 
-    for ground_node in ground_nodes:
-        if not _can_escape(nodes, ground_node):
-            escapees += 1
+    _, ax = plt.subplots()
+    ax.add_patch(p)
+    ax.set_xlim([0, grid.shape[1] - 1])
+    ax.set_ylim([grid.shape[0] - 1, 0])
 
-    return escapees
+    plt.show()
+
+    return contained
 
 
 if __name__ == "__main__":
-    start = time.time()
-    sys.setrecursionlimit(2000)
-    print("Part 1:", part1())
-    end = time.time()
-    print("Took:", end - start)
-    start = time.time()
-    print("Part 2:", part2())
-    end = time.time()
-    print("Took:", end - start)
+    pipes = part1()
+    print("Part 1:", len(pipes) // 2)
+    print("Part 2:", part2(pipes))
