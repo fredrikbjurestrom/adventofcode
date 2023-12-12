@@ -14,15 +14,15 @@ def expand_space(unexpanded_space, expansion):
     """
     space_columns = np.all(unexpanded_space[:, 0:] == ".", axis=0)
     x_offset = 0
-    for space_x in np.arange(grid.shape[1])[space_columns]:
+    for space_x in np.arange(unexpanded_space.shape[1])[space_columns]:
         for galaxy in galaxies:
             if galaxy[1] > space_x + x_offset:
                 galaxy[1] += expansion - 1
         x_offset += expansion - 1
 
-    space_rows = np.all(grid[:, 0:] == ".", axis=1)
+    space_rows = np.all(unexpanded_space[:, 0:] == ".", axis=1)
     y_offset = 0
-    for space_y in np.arange(grid.shape[0])[space_rows]:
+    for space_y in np.arange(unexpanded_space.shape[0])[space_rows]:
         for galaxy in galaxies:
             if galaxy[0] > space_y + y_offset:
                 galaxy[0] += expansion - 1
