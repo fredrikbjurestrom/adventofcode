@@ -1,0 +1,1 @@
+COPY myTable FROM '/path/to/file/on/server' ( FORMAT CSV, DELIMITER('|') );
