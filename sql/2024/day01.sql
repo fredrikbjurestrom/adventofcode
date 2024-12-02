@@ -10,8 +10,10 @@ from (select l, row_number() over(order by l) as rn
 
 /* setup
 drop table if exists day01;
+drop table if exists day01_example;
 
 create table day01 (l int, r int);
+create table day01_example (l int, r int);
 
 insert into day01
 select
@@ -1020,7 +1022,24 @@ from (
 72046   30416
 61316   42384
 70861   52220'
-	,E'\n')) as r
+	,E'\r\n')) as r
+	where length(r) > 0
+	) as inp;
+
+insert into day01_example
+select
+	split_part(r, '   ', 1)::int,
+	split_part(r, '   ', 2)::int
+from (
+	select r
+	from unnest(string_to_array('
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3'
+	,E'\r\n')) as r
 	where length(r) > 0
 	) as inp;
 */
