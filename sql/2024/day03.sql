@@ -1,4 +1,4 @@
--- Part 1
+-- Part 1 & 2
 with recursive occurances as (
     select regexp_count(memory, 'mul\([0-9]+,[0-9]+\)') as n
     from day03
@@ -8,29 +8,12 @@ with recursive occurances as (
     where n > 1
     )
 
-select sum(split_part(factors, ',', 1)::int * split_part(factors, ',', 2)::int)
-from (
-    select substr(operation_start, 5, regexp_instr(operation_start, '\)') - 5) as factors
-    from (
-        select substr(memory, regexp_instr(memory, 'mul\([0-9]+,[0-9]+\)', 1, o.n)) as operation_start
-        from day03 e, occurances o
-        ) sub
-    );
-
--- Part 2
-with recursive occurances as (
-    select regexp_count(memory, 'mul\([0-9]+,[0-9]+\)') as n
-    from day03
-    union all
-    select n - 1
-    from occurances
-    where n > 1
-    )
-
-select sum(
+select
+    sum(split_part(factors, ',', 1)::int * split_part(factors, ',', 2)::int) as part1,
+    sum(
        split_part(factors, ',', 1)::int * split_part(factors, ',', 2)::int
         * case when prev_dont > prev_do then 0 else 1 end
-       )
+       ) as part2
 from (
     select
         substr(operation_start, 5, regexp_instr(operation_start, '\)') - 5) as factors,
