@@ -5,10 +5,9 @@ public class IO
     public static IEnumerable<string> ReadInput(string path)
     {
         using StreamReader sr = File.OpenText(path);
-        string s = "";
-        while ((s = sr.ReadLine()) != null)
+        while (sr.ReadLine() is { } line)
         {
-            yield return s;
+            yield return line;
         }
     }
 }
