@@ -6,7 +6,7 @@ using static Lib.IO;
 
 (int dial, int part1, int part2) agg = (50, 0, 0);
 
-var part1 = ReadInput("./inputs/day01.txt")
+var result = ReadInput("./inputs/day01.txt")
     .Aggregate(
         agg,
         (cur, next) =>
@@ -26,4 +26,4 @@ var part1 = ReadInput("./inputs/day01.txt")
         }
     );
 
-Console.WriteLine(agg);
+Console.WriteLine($"Part 1: {result.part1}, Part 2: {result.part2}");
