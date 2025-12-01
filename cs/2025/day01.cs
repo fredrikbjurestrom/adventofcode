@@ -4,25 +4,21 @@
 
 using static Lib.IO;
 
-(int dial, int part1, int part2) agg = (50, 0, 0);
-
 var result = ReadInput("./inputs/day01.txt")
     .Aggregate(
-        agg,
-        (cur, next) =>
+        (dial: 50, part1: 0, part2: 0),
+        (acc, next) =>
         {
-            var newPosition = agg.dial + (int.Parse(next[1..]) * (next[0] == 'L' ? -1 : 1));
-            agg.part1 += newPosition % 100 == 0 ? 1 : 0;
+            var newPos = acc.dial + (int.Parse(next[1..]) * (next[0] == 'L' ? -1 : 1));
+            var part1 = acc.part1 + (newPos % 100 == 0 ? 1 : 0);
+            var part2 = acc.part2 + (Math.Abs(newPos) >= 100 ? Math.Abs(newPos) / 100 : 0);
 
-            if (Math.Abs(newPosition) >= 100)
-                agg.part2 += Math.Abs(newPosition) / 100;
+            if (acc.dial != 0 && newPos <= 0)
+                part2 += 1;
 
-            if ((agg.dial != 0 && newPosition <= 0))
-                agg.part2 += 1;
+            var dial = (newPos % 100) >= 0 ? (newPos % 100) : 100 + (newPos % 100);
 
-            agg.dial = (newPosition % 100) >= 0 ? (newPosition % 100) : 100 + (newPosition % 100);
-
-            return agg;
+            return (dial, part1, part2);
         }
     );
 
