@@ -4,7 +4,7 @@
 
 using static Lib.IO;
 
-var result = ReadInput("./inputs/day02-test.txt")
+var result = ReadInput("./inputs/day02.txt")
     .SelectMany(x => x.Split(','))
     .Select(x => new { from = long.Parse(x.Split('-')[0]), to = long.Parse(x.Split('-')[1]) })
     .SelectMany(x => expand(x.from, x.to))
@@ -34,5 +34,11 @@ long part1(long id)
 
 long part2(long id)
 {
+    var s = $"{id}";
+    var validChunks = Enumerable.Range(1, s.Length - 1).Where(x => s.Length % x == 0);
+    foreach (var n in validChunks)
+        if (s.Chunk(n).Select(x => new String(x)).Distinct().Count() == 1)
+            return id;
+
     return 0;
 }
