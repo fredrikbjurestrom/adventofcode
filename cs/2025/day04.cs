@@ -4,16 +4,42 @@
 
 using static Lib.IO;
 
-var grid = ReadInput("./inputs/day04.txt")
-    .Select(row => row.ToArray())
-    .ToArray();
+var grid = ReadInput("./inputs/day04.txt").Select(row => row.ToArray()).ToArray();
 
 var part1 = grid.SelectMany(
-            (line, y) => line.Where((pos, x) => pos == '@' && accessibleByForklift(grid, y, x))
+        (line, y) => line.Where((pos, x) => pos == '@' && accessibleByForklift(grid, y, x))
+    )
+    .Count();
+
+var part2 = 0;
+while (true)
+{
+    var papers = grid.SelectMany(
+            (line, y) =>
+                line.Where(
+                    (pos, x) =>
+                    {
+                        if (pos != '@')
+                            return false;
+
+                        if (accessibleByForklift(grid, y, x))
+                        {
+                            grid[y][x] = '.';
+                            return true;
+                        }
+
+                        return false;
+                    }
+                )
         )
         .Count();
 
-Console.WriteLine($"Part 1: {part1}, Part 2: {part1}");
+    if (papers == 0) break;
+
+    part2 += papers;
+}
+
+Console.WriteLine($"Part 1: {part1}, Part 2: {part2}");
 
 bool accessibleByForklift(char[][] grid, int y, int x)
 {
