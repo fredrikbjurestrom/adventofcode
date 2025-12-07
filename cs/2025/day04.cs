@@ -34,7 +34,8 @@ while (true)
         )
         .Count();
 
-    if (papers == 0) break;
+    if (papers == 0)
+        break;
 
     part2 += papers;
 }
